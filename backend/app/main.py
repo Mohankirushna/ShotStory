@@ -16,7 +16,23 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"{settings.APP_NAME} v{settings.APP_VERSION} starting up...")
-    logger.info("Models will be loaded on first request (lazy loading).")
+    
+    if settings.PRELOAD_MODELS:
+        logger.info("Preloading models during startup (PRELOAD_MODELS=true)...")
+        try:
+            from app.services.image_analyzer import ImageAnalyzer
+            from app.services.story_generator import StoryGenerator
+            
+            ImageAnalyzer.get_instance().load_models()
+            StoryGenerator.get_instance().load_model()
+            logger.info("✓ All models preloaded successfully!")
+        except Exception as e:
+            logger.error(f"Failed to preload models: {e}")
+            logger.info("Models will load on first request instead.")
+    else:
+        logger.info("Models will be loaded on first request (lazy loading).")
+        logger.info("Set PRELOAD_MODELS=true in .env to preload during startup.")
+    
     yield
     logger.info("Shutting down...")
 

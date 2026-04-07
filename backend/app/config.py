@@ -27,5 +27,8 @@ class Settings:
     MAX_IMAGE_SIZE: int = 10 * 1024 * 1024  # 10MB
     IMAGE_RESIZE_MAX: int = 800  # Max dimension for processing
 
+    # Startup behavior
+    PRELOAD_MODELS: bool = os.getenv("PRELOAD_MODELS", "false").lower() == "true"
+
 
 settings = Settings()

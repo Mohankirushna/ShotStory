@@ -75,10 +75,10 @@ class ImageAnalyzer:
 
         logger.info("Loading DETR detection model (%s)...", settings.DETECTION_MODEL)
         self.detection_processor = self._load(
-            DetrImageProcessor, settings.DETECTION_MODEL, revision="no_timm"
+            DetrImageProcessor, settings.DETECTION_MODEL
         )
         self.detection_model = self._load(
-            DetrForObjectDetection, settings.DETECTION_MODEL, revision="no_timm"
+            DetrForObjectDetection, settings.DETECTION_MODEL
         ).to(self.device)
         self.detection_model.eval()
 

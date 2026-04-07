@@ -8,4 +8,6 @@ if __name__ == "__main__":
         port=8000,
         reload=True,
         log_level="info",
+        timeout_keep_alive=300,  # 5 minutes for model loading on first request
+        timeout_graceful_shutdown=30,
     )
